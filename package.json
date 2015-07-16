@@ -13,5 +13,18 @@
     "hbs": "~2.9.0",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0"
-  }
+  },
+  "engines": {
+      "node": "0.12.2"
+  },
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+      "node",
+      "heroku",
+      "express"
+  ],
+  "license": "MIT"  
 }
