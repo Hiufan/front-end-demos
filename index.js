@@ -46,8 +46,8 @@ app.use(express.static(__dirname + '/public'));
 // app.use('/', routes);
 // app.use('/users', users);
 
-app.get('/', function(request, response) {
-  response.render('pages/index')
+app.get('/', function(req, res) {
+  res.render('index',{title:"第一个网站"})
 });
 
 
