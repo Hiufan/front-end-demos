@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOMNodeInserted</title>
+</head>
+<body>
+
+
+
+<script>
+	/**
+	 	监听是否有新的节点插入
+	 	
+	 */
+	document.addEventListener('DOMNodeInserted', function (e){
+		console.log(1);
+	}, false);
+
+
+	setInterval(function(){
+		
+		var div = document.createElement('div');
+		div.innerText = 'iiiiiii';
+		document.body.insertBefore(div);
+	}, 1000)
+
+</script>
+	
+</body>
+</html>

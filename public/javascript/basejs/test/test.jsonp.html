@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="../base.jsonp.js"></script>
+
+	<script>
+
+		/**
+		 *	test
+		 */
+
+		var params = {
+			'msg_ids': '',
+			'sel_count': '3',
+			'sel_pclass': '越南新闻',
+			'sel_sclass': '头条',
+			'sel_src_nm': '',
+			'sel_col': '',
+			'sel_topic': '',
+			'sel_sort': 'desc',
+			'sel_orderby': 'create_date',
+			'sel_interval': '1',
+		}
+
+		jsonp(''
+			,params 
+			,function(data){
+			console.log(data);
+		});
+
+	</script>
+
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		input[type=range] {
+		    -webkit-appearance: none;
+		    background-color: Red;
+		    width: 500px;
+		}
+
+		input[type=range]::-webkit-slider-thumb {
+		    /*-webkit-appearance: none;*/
+		    background-color: Green;
+		    opacity: 0.5;
+		    width: 10px;
+		    height: 40px;
+		}
+		p { color: Green; } 
+	</style>
+	
+</head>
+<body>
+
+	<input type="range">
+	
+	<p>My Future is so bright</p>
+	<div id="foo"></div>
+
+	<script>
+		window.onload = function(){
+
+	    	var foo = document.getElementById('foo');
+	    	// 注意：这里只是模拟，不是真实的API
+	    	foo.shadow = document.createElement('p');
+	    	foo.shadow.textContent = 'I gotta wear shades';
+		}
+	</script>
+</body>
+</html>

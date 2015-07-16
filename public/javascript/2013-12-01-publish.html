@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>publish and subscribe</title>
+
+	<script src="js/publish.js"></script>
+	<script src="../_lib/jquery-2.0.3.js"></script>
+
+</head>
+<body>
+
+	<!-- Example 4 -->
+	<script id="userTemplate" type="text/x-jquery-tmpl">
+	 
+	    <li>${user}</li>
+	 
+	</script>
+	 
+	<script id="ratingsTemplate" type="text/x-jquery-tmpl">
+	 
+	    <li><strong>${movie}</strong> was rated ${rating}/5</li>
+	 
+	</script>
+	 
+	<div id="container">
+	 
+	    <div class="sampleForm">
+	 
+	        <p>
+	 
+	            <label for="twitter_handle">Twitter handle:</label>
+	 
+	            <input type="text" id="twitter_handle" />
+	 
+	        </p>
+	 
+	        <p>
+	 
+	            <label for="movie_seen">Name a movie you've seen this year:</label>
+	 
+	            <input type="text" id="movie_seen" />
+	 
+	        </p>
+	 
+	        <p>
+	 
+	            <label for="movie_rating">Rate the movie you saw:</label>
+	 
+	            <select id="movie_rating">
+	 
+	                  <option value="1">1</option>
+	 
+	                   <option value="2">2</option>
+	 
+	                   <option value="3">3</option>
+	 
+	                   <option value="4">4</option>
+	 
+	                   <option value="5" selected>5</option>
+	 
+	           </select>
+	 
+	         </p>
+	 
+	         <p>
+	             <button id="add">Submit rating</button>
+	         </p>
+	 
+	     </div>
+
+	     <div class="summaryTable">
+	 
+	        <div id="users"><h3>Recent users</h3></div>
+	 
+	        <div id="ratings"><h3>Recent movies rated</h3></div>
+	     </div>
+	 </div>
+
+
+<script>
+
+
+/**
+ *	Example 1
+ */
+
+/*// a sample subscriber (or observer)
+var testSubscriber = function( topics , data ){
+ 
+    console.log( topics + ": " + data );
+ 
+};
+
+// add the function to the list of subscribers to a particular topic
+// maintain the token (subscription instance) to enable unsubscription later
+var testSubscription = PubSub.subscribe( 'example1', testSubscriber );
+ 
+// publish a topic or message asyncronously
+PubSub.publish( 'example1', ['test','a','b','c'] );
+PubSub.publish( 'example1', [{'color':'blue'},{'text':'hello'}] );
+ 
+// unsubscribe from further topics
+ 
+setTimeout(function(){
+ 
+    PubSub.unsubscribe( testSubscription );
+ 
+}, 0);
+ 
+// test that we've fully unsubscribed
+PubSub.publish( 'example1', 'hello again!' );*/
+
+
+
+
+/**
+ *	Example2
+ */
+/*var grid = {
+ 
+    refreshData: function(){
+ 
+        console.log('retrieved latest data from data cache');
+        console.log('updated grid component');
+ 
+    },
+ 
+    updateCounter: function(){
+        console.log('data last updated at: ' + getCurrentTime());
+    }    
+ 
+};
+ 
+ 
+ 
+//a very basic mediator
+var gridUpdate = function(topics, data){ 
+ 
+      grid.refreshData();
+      grid.updateCounter();
+}
+ 
+var dataSubscription = PubSub.subscribe( 'dataUpdated', gridUpdate );
+ 
+PubSub.publish( 'dataUpdated', 'new stock data available!' );
+ 
+PubSub.publish( 'dataUpdated', 'new stock data available!' );
+
+function getCurrentTime(){
+ 
+    var date = new Date(),
+ 
+          m = date.getMonth() + 1,
+ 
+          d = date.getDate(),
+ 
+          y = date.getFullYear(),
+ 
+          t = date.toLocaleTimeString().toLowerCase();
+ 
+         return (m + '/' + d + '/' + y + ' ' + t);
+}*/
+
+
+/**
+ *	Example3
+ */
+/*var grid = {
+ 
+    addEntry: function (data){
+
+        if (data !== 'undefined') {
+           console.log('Entry:' + data.title + ' Changenet / %' + data.changenet + '/' + data.percentage + ' % added');
+        }
+    },
+ 
+    updateCounter: function (timestamp){
+        console.log('grid last updated at: ' + timestamp);
+    }
+};
+ 
+var gridUpdate = function(topics, data){
+ 
+        grid.addEntry(data);
+        grid.updateCounter(data.timestamp);
+ 
+};
+
+var gridSubscription = PubSub.subscribe( 'dataUpdated', gridUpdate );
+ 
+PubSub.publish('dataUpdated',   { title: "Microsoft shares", changenet: 4, percentage: 33, timestamp: '17:34:12'});
+PubSub.publish('dataUpdated',   { title: "Dell shares", changenet: 10, percentage: 20, timestamp: '17:35:16'  });*/
+
+/**
+ *	Example
+ */
+
+
+
+</script>
+
+
+<script>
+
+	/**
+	 *	Example 4
+	 */
+	(function ($) {
+	 
+		var movieList = [],
+		    userList  = [];
+		    
+		 
+		/* subscribers */
+		 
+		$.subscribe( "/new/user", function(userName){
+		 
+		    if(userName.length){
+		 
+		        userList.push({user: userName});
+		 
+		        $( "#userTemplate" ).tmpl( userList ).appendTo( "#users" );
+		 
+		   }
+		 
+		});
+		 
+		$.subscribe( "/new/rating", function(movieTitle, userRating){
+		 
+		    if(movieTitle.length){
+		 
+		      movieList.push({ movie: movieTitle, rating: userRating});
+		 
+		      $( "#ratingsTemplate" ).tmpl( movieList ).appendTo( "#ratings" );
+		 
+		    }
+		 
+		});
+
+		$('#add').bind('click', function(){
+		 
+		        var strUser    = $("#twitter_handle").val(),
+		 
+		            strMovie = $("#movie_seen").val(),
+		 
+		            strRating = $("#movie_rating").val();
+
+		        $.publish('/new/user',  strUser  );
+		 
+		        $.publish('/new/rating',  [ strMovie, strRating] );
+		});
+
+	})(jQuery);	
+</script>
+
+
+</body>
+</html>

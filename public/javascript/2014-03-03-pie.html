@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<style>
+		svg{
+			border: 1px solid #fff;
+		}
+
+	</style>
+
+</head>
+<body>
+<p>fdsfddddddfdfdfddsffds</p>
+
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300" height="300">
+ <path id="test1" style="fill:#f00; " />
+ <path id="test2" style="fill:#0a0; " />
+<!--  <circle cx="150" cy="150" r="5" stroke="green" stroke-width="0" fill="yellow"></circle>
+ <circle cx="100" cy="100" r="5" stroke="green" stroke-width="0" fill="yellow"></circle>
+ <circle cx="250" cy="150" r="5" stroke="green" stroke-width="0" fill="yellow"></circle> -->
+</svg>
+
+<!-- 
+stroke:#fff; stroke-width:5;
+stroke:#fff; stroke-width:5;
+ -->
+
+<canvas id="pieMap" width="500" height="500" style="border:1px black solid;"></canvas>
+
+	
+<script>
+
+function pie(percent){
+	var startAngle = 0,
+		cx = 150, //圆心 x坐标
+		cy = 150, //圆心 y坐标
+		r = 100,
+		// percent = percent > 0.5 
+		deg1 = (360 - percent * 360) + startAngle,
+		deg2 = percent * 360 + deg1;
+
+	console.log(deg1 + '-------' + deg2);
+
+	var x1 = cx + r * Math.cos(deg1 * Math.PI/180);
+	var y1 = cy - r * Math.sin(deg1 * Math.PI/180);
+
+	var x0 = cx + r * Math.cos(startAngle * Math.PI/180);
+	var y0 = cy - r * Math.sin(startAngle * Math.PI/180);
+	var x2 = cx + r * Math.cos(deg2 * Math.PI/180); 
+	var y2 = cy - r * Math.sin(deg2 * Math.PI/180); 
+
+	document.getElementById('test2').setAttribute("d", "M "+cx+","+cy+" L "+x1+","+y1+" A "+r+","+r+" 0 1,0 "+x2+","+y2+" Z");
+
+	document.getElementById('test1').setAttribute("d", "M "+cx+","+cy+" L "+x0+","+y0+" A "+r+","+r+" 0 0,0 "+x1+","+y1+" Z");
+}
+
+pie(0.7);
+
+
+
+
+</script>
+
+
+<script type="text/javascript">
+	var color=["#FF0000","#00FF00"];
+	var data=[50,50];
+	var list=new Array(data.length);
+	function GetFanShape(id,x0,y0){
+	 var angle_Start=0;
+	 //圆心坐标
+	 var rx=100;
+	 var ry=100;
+	 var x=0;
+	 var y=0;
+	 //x1,y1为弧的起点
+	 for(var i=0;i<data.length;i++)
+	 {
+	     if(id==i)
+	     {
+	         rx=x0;
+	         ry=y0;
+	     }
+	     else
+	     {
+	         rx=100;
+	         ry=100;
+	     }
+	     var x1=0;
+	     var y1=0;
+	     if(x==0&&y==0)
+	     {
+	         x1=rx+100*(Math.cos(angle_Start*Math.PI/180));
+	         y1=ry+100*(Math.sin(angle_Start*Math.PI/180));
+	     }
+	     else
+	     {
+	         x1=x;
+	         y1=y;
+	     }
+	     //x3,y3 为弧上中点位置的坐标
+	  var x3=rx+100*(Math.cos(((angle_Start+Math.PI*(data[i]/100))+Math.PI*2*(data[i]/100)*Math.PI/180)));
+	  var y3=ry+100*(Math.sin(((angle_Start+Math.PI*(data[i]/100))+Math.PI*2*(data[i]/100)*Math.PI/180)));
+	   
+	  angle_Start+=Math.PI*2*(data[i]/100);
+	  //x2,y2为弧的终点
+	  var x2=rx+100*(Math.cos((angle_Start+Math.PI*2*(data[i]/100)*Math.PI/180)));
+	  var y2=ry+100*(Math.sin((angle_Start+Math.PI*2*(data[i]/100)*Math.PI/180)));
+	  x=x2;
+	  y=y2;
+	  var FanShape={};
+	  FanShape.Id=i;
+	  FanShape.x1=x1;
+	  FanShape.y1=y1;
+	  FanShape.x2=x2;
+	  FanShape.y2=y2;
+	  FanShape.x3=x3;
+	  FanShape.y3=y3;
+	  FanShape.x=rx;
+	  FanShape.y=ry;
+	  FanShape.data=data[i];
+	  //半径
+	  FanShape.r=100;
+	  list[i]=FanShape;     
+	 }
+	}
+	
+	function PieMap(id){
+	 var canvas=document.getElementById("pieMap");
+	 var pie=canvas.getContext("2d");
+	 pie.save();
+	 pie.clearRect(0,0,500,500);
+	 pie.translate(100,100);
+	 
+	 //画弧度
+	 var angle_Start=0;    
+	 for(var i=0;i<data.length;i++){
+	     pie.beginPath();
+	     if(i==id){
+	     var sh=list[id];
+	     var x= (sh.x1+sh.x2)/2;
+	     var y=(sh.y1+sh.y2)/2;
+	     x=(100+x)/2;
+	     y=(100+y)/2;
+	     
+	     x=(100+x)/2;
+	     y=(100+y)/2;
+	     GetFanShape(id,x,y);
+	     pie.moveTo(x,y);
+	     pie.arc(x,y,100,angle_Start,angle_Start+Math.PI*2*(data[i]/100),false);    
+	     }else{
+	         pie.moveTo(100,100);
+	         pie.arc(100,100,100,angle_Start,angle_Start+Math.PI*2*(data[i]/100),false);    
+	     }
+	     pie.fillStyle=color[i];
+	     pie.fill();
+	     angle_Start+=Math.PI*2*(data[i]/100);
+	 }    
+	 //writeText(pie);
+	 writeLine(pie);
+	 pie.restore();
+	}
+	 
+	 //三角形的面积
+	 function GetArea(A,B,C){
+	     var result=Math.abs((A.x-C.x)*(B.y-C.y)-(B.x-C.x)*(A.y-C.y))/2;
+	     return result;
+	 }
+	 //扇形外画线
+	 function writeLine(pie){
+	     for(var i=0;i<list.length;i++)
+	     {
+	         var s=list[i];
+	         pie.save();
+	         pie.beginPath();
+	         pie.fillStyle="black";
+	         pie.moveTo(s.x3,s.y3);
+	         var p=getXY(s.x,s.y,s.x3,s.y3);
+	         pie.lineTo(p.x,p.y);
+	         pie.fillText(s.data+"%",p.x,p.y);
+	         pie.stroke();
+	         pie.restore();
+	     }
+	 }
+
+	 
+
+	  window.onload=function(){
+	      GetFanShape(-1,100,100);
+	      PieMap(-1);
+	 }
+	 
+	 //亮点之间的距离
+	 function getDistance(x1,y1,x2,y2){
+	     return Math.sqrt((Math.pow(x1-x2,2)+Math.pow(y1-y2,2)));
+	 }
+	 
+	 var xy={};
+	  //获取扇形外直线的终点
+	  //参数一 圆心坐标X和Y，扇形中点坐标X和Y
+	 function getXY(rx,ry,x3,y3){
+	      xy.x=(3*x3-rx)/2;
+	      xy.y=(3*y3-ry)/2
+	     return xy;
+	 }
+</script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>btn shake</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+	<style>
+		body{
+			margin: 0px;
+			padding: 0px;
+			background-color: #fff;
+		}
+
+		section{
+			width: 50%;
+			margin: 0px auto;
+			padding:30px 10px;
+			color: #fff;
+			border: 1px solid #ddd;
+			background-color: #fafafa;
+		}
+
+		.btn{
+			display: inline-block;
+			line-height: 20px;
+			padding: 10px;
+			background-color: #4c0d09;
+			color: #fff;
+			border-radius: 5px;
+			margin: 10px;
+			min-width: 200px;
+			text-align: center;
+		}
+
+		.btn-bg-pink{
+			background-color: #ffc19f;
+		}
+
+		.shake:hover{
+			-webkit-animation-name: shake;
+			-webkit-animation-duration: 0.05s;
+			-webkit-animation-timing-function: linear;
+			-webkit-animation-direction: alternate;	
+			-webkit-animation-iteration-count: infinite;
+		}
+
+		@-webkit-keyframes shake {
+			from {-webkit-transform: translateX(-10px);}
+			to {-webkit-transform: translateX(10px);}
+		}
+
+	</style>
+
+</head>
+<body>
+
+	<section>
+		
+		<div class="shake btn">shake btn</div>
+		<div class="shake btn btn-bg-pink">shake btn</div>
+		<div class="shake btn">shake btn</div>
+		<div class="shake btn btn-bg-pink">shake btn</div>
+		
+	</section>
+	
+
+
+
+</body>
+</html>

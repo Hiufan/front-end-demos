@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+	<script>
+		
+		/**
+		 * JSONP 看起来与 JSON 差不多,只不过是被包含在函数调用中的 JSON
+		   callback({ "name": "Nicholas" });
+		   JSONP 由两部分组成:回调函数和数据
+		 */
+
+
+		function handleResponse(response){
+		alert("You’re at IP address " + response.ip + ", which is in " +
+		          response.city + ", " + response.region_name);
+		}
+		var script = document.createElement("script");
+		script.src = "http://freegeoip.net/json/?callback=handleResponse"; 
+		document.body.insertBefore(script, document.body.firstChild);
+
+		/**
+		 * reference
+		 * 《js高级程序设计》
+		 */
+
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

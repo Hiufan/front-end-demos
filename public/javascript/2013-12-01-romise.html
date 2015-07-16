@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+
+
+
+</head>
+
+<body>
+
+	<div id="demoShowDiv">
+		
+
+	</div>
+
+	<script type="text/javascript">
+	/**
+	* @author Barret Lee
+	* @email barret.china@gmail.com
+	* @description 事件队列管理，含延时
+	*/
+	var Q = {
+	    // 保存队列信息
+	    a: [],
+	    // 添加到队列 queue
+	    q: function(d){
+	        // 添加到队列如果不是函数或者数字则不处理
+	        if(!/function|number/.test(typeof d)) return;
+
+	        Q.a.push(d);
+	        // 返回对自身的引用
+	        return Q;
+	    },
+	    // 执行队列 dequeue
+	    d: function(){
+	        var s = Q.a.shift();
+	        // 如果已经到了队列尽头则返回
+	        if(!s) return;
+
+	        // 如果是函数，直接执行，然后继续 dequeue
+	        if(typeof s === "function") {
+	            s(), Q.d();
+	            return;
+	        }
+
+	        // 如果是数字，该数字作为延迟时间，延迟 dequeue
+	        setTimeout(function(){
+	            Q.d();
+	        }, s);
+	    }
+	};
+
+	// 进程记录函数
+	function record(s){
+	    var div = document.createElement("div");
+	    div.innerHTML = s;
+	    console.log(s);
+	    document.body.appendChild(div);
+	}
+
+	Q
+	.q(function(){
+	    record("0 <i style='color:blue'>3s 之后搞定，0 把 1 叫进来</i>");
+	})
+	.q(3000)  // 延时 3s
+	.q(function(){
+	    record("1 <i style='color:blue'>2s 之后搞定，1 把 2 叫进来</i>");
+	})
+	.q(2000)  // 延时 2s
+	.q(function(){
+	    record("2 <span style='color:red'>后面没人了，OK，厕所关门~</span>");
+	})
+	.d();     // 执行队列
+
+	</script>	
+	
+</body>
+</html>
