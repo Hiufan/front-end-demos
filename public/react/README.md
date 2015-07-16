@@ -1,1 +1,0 @@
-# some thing learn about react
