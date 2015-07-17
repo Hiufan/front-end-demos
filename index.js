@@ -4,16 +4,48 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
+var template = require('art-template');
+
 
 var app = express();
 
-app.use(router('routes/'));
+// var markdown_engine = function(path, options, fn){
+//   fs.readFile(path, 'utf8', function(err, str){
+//     if (err) return fn(err);
+//     try {
+//       var html = md(str);
+//       html = html.replace(/\{([^}]+)\}/g, function(_, name){
+//         return options[name] || '';
+//       })
+//       fn(null, html);
+//     } catch(err) {
+//       fn(err);
+//     }
+//   });
+// };
+template.helper('getFilename', function (file) {
+
+    var filename = file.substring(0,file.indexOf('.'));
+    return filename;
+});
+
+
+
 
 app.set('port', (process.env.PORT || 5000));
+// app.engine('md',markdown_engine);
+// app.engine('mkd', markdown_engine);
+// app.engine('markdown', markdown_engine);
 
 // view engine setup
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'hbs');
+
+template.config('extname', '.tpl');
+app.engine('.tpl', template.__express);
+app.set('view engine', 'tpl');
 app.set('views', __dirname + '/views');
-app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -24,10 +56,8 @@ app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
 
 
-app.get('/', function(req, res) {
-  res.render('index',{title:"第一个网站"})
-});
 
+app.use(router('routes/'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

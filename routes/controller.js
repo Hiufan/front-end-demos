@@ -1,12 +1,24 @@
+var fs = require('fs');
+var marked = require('marked');
+var path = require('path');
+
 module.exports = {
     get: {       
         '/': function (req, res) {
            //todo
-           res.render('index',{title:'This is home page.'});       
+           var mdFiles = fs.readdirSync('./articles/');
+           // console.log(mdFiles);
+           res.render('index',{title: 'Home Page', mdFiles: mdFiles});
         },       
-        '/inbox': function (req, res) {
-           //todo
-           res.render('index',{title:'This is inbox page.'});
+        '/detail/:name': function (req, res) {
+            //todo
+            var mdFileName = req.params.name+'.md';
+
+            // res.render("../articles/" + mdFileName,{ title : mdFileName});
+            var location = path.join(__dirname,'../articles/'+mdFileName);
+            console.log(location);
+            var file = fs.readFileSync(location, 'utf8');
+            res.render('detail',{content:marked(file)});
         }
     }
 };
