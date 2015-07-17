@@ -3,8 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
-	<link rel="stylesheet" href="http://sindresorhus.com/github-markdown-css/github-markdown.css">
-	<link rel="stylesheet" href="http://showdownjs.github.io/demo/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/github-markdown.css">
 	<style>
 	    .markdown-body {
 	        min-width: 200px;
