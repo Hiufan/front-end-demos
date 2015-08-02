@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
-var template = require('art-template');
+var template = require('art-template/node/template-native.js')
 
 
 var app = express();
